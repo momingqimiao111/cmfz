@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baizhi.dao.ArticleDao">
+
+    <resultMap id="articleMap" type="Article">
+        <id column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="img" property="img"/>
+        <result column="content" property="content"/>
+        <result column="create_date" property="create_date"/>
+        <result column="publish_date" property="publish_date"/>
+        <result column="guru_id" property="guru_id"/>
+        <association property="guru" javaType="Guru">
+            <id column="gid" property="id"/>
+            <result column="gname" property="name"/>
+            <result column="gphoto" property="photo"/>
+            <result column="gnick_name" property="nick_name"/>
+        </association>
+
+    </resultMap>
+
+    <select id="queryByDate" resultMap="articleMap">
+        select a.id,a.title,a.img,a.content,a.create_date,a.publish_date,a.guru_id,
+        g.id gid,g.name gname,g.photo gphoto,g.nick_name gnick_name
+        from article a left join guru g on a.guru_id = g.id
+        order by a.publish_date desc limit 0,3
+    </select>
+
+</mapper>
